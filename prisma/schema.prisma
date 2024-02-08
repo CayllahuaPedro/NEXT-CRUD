@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// generando codigo para js
+
+/// base de datos 
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Task {
+  id          Int         @id @default(autoincrement())
+  title       String
+  // coneccion con listaTareas 1 to many
+  listaTareas ListaTareas @relation(fields: [listaId], references: [id])
+  listaId     Int
+
+  description String?
+  createDate  DateTime @default(now())
+}
+
+model Users {
+  id                     Int           @id @default(autoincrement())
+  email                  String        @unique
+  username               String        @unique
+  password               String
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+  listaTareas            ListaTareas[]
+  // conexion con relaciones
+  listasTareasRelaciones Relaciones[]
+}
+
+model ListaTareas {
+  id              Int          @id @default(autoincrement())
+  nombre          String
+  tasks           Task[]
+  listaRelaciones Relaciones[]
+  //relaciona a las listas de tareas con cada usuario
+  user            Users        @relation(fields: [userId], references: [id])
+  userId          Int
+}
+
+model Relaciones {
+    listaTarea ListaTareas @relation(fields: [listaId], references: [id])
+    listaId   Int
+
+    user   Users @relation(fields: [userId], references: [id])
+    userId Int
+
+    @@id([listaId, userId])
+}
