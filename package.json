@@ -7,9 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "llenardatos": "tsx"
+    "llenardatos": "tsx",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@libsql/client": "^0.4.3",
+    "@prisma/adapter-libsql": "^5.9.1",
     "@prisma/client": "^5.8.0",
     "aws-sdk": "^2.1550.0",
     "bcrypt": "^5.1.1",
