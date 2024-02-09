@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "llenardatos": "tsx",
-    "postinstall": "prisma generate"
+     "postinstall": "prisma generate"
   },
   "dependencies": {
     "@libsql/client": "^0.4.3",
