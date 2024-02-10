@@ -1,7 +1,9 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-export default function Form({ListaId, tareaActual }) {
+
+export default function Form({ListaId, tareaActual,ChangeModal }) {
+  console.log(ListaId, "esta en Form")
   const router = useRouter();
   const [title, setTitle] = useState(tareaActual?.title || "");
   const [description, setDescription] = useState(
@@ -32,14 +34,14 @@ export default function Form({ListaId, tareaActual }) {
       const data = await res.JSON;
       console.log(data);
     }
-    router.push(`/listas/edit/${ListaId}`);
+    ChangeModal(false)
     router.refresh();
   };
   return (
     <div className="h-screen flex justify-center items-center">
-      <form className="bg-slate-800 p-10 w-1/4" onSubmit={onSubmit}>
+      <form className="bg-slate-800 p-5 w-full" onSubmit={onSubmit}>
         <label htmlFor="title" className="font-bold text-sm">
-          Titulo de la tarea:
+          Task title:
         </label>
         <input
           className="border border-gray-400 p-2 mb-4 w-full text-black"
@@ -51,7 +53,7 @@ export default function Form({ListaId, tareaActual }) {
         />
 
         <label htmlFor="description" className="font-bold text-sm">
-          Descripcion de la tarea:
+          Task description:
         </label>
 
         <textarea
@@ -62,29 +64,19 @@ export default function Form({ListaId, tareaActual }) {
           onChange={(e) => setDescription(e.target.value)}
           value={description}
         ></textarea>
-
-        <button
+        { tareaActual?  <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           type="submit"
         >
-          crear
-        </button>
-        {tareaActual && (
-          <button
-            className="bg-red-500 hover:bg-red 700 text-white font-bold py-2 px-4 rounded ml-4"
-            type="button"
-            onClick={async () => {
-              const res = await fetch(`/api/tasks/${tareaActual.id}`, {
-                method: "DELETE",
-              });
-              const data = await res.json;
-              router.back();
-              router.refresh();
-            }}
-          >
-            Delete
-          </button>
-        )}
+          Update
+        </button>: 
+         <button
+         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+         type="submit"
+       >
+          Create
+       </button>
+        }
       </form>
     </div>
   );
